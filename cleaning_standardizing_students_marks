@@ -1,0 +1,37 @@
+#Students marks data
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+#students data set
+students_class_10={"Name":["madiha","atif","maham","bilal","ahaan","sara","bushra","BUSHRA","emaan",None],
+                   "Maths":[87,67,78,56,67,78,89,77,66,90],
+                   "chemistry":[67,87,67,54,78,None,87,98,76,56],
+                   "Physics":[65,76,76,87,54,45,None,None,34,65]
+                   }
+stc10=pd.DataFrame(students_class_10)
+#cleaning and standardizing data:
+stc10["Name"].isnull()
+stc10.dropna(subset="Name",inplace=True)
+stc10["Name"]=stc10["Name"].str.lower().str.strip()
+stc10.drop_duplicates(subset="Name",keep="first",inplace=True)
+stc10["Maths"]=stc10["Maths"].fillna(stc10["Maths"].mean())
+stc10["chemistry"]=stc10["chemistry"].fillna(stc10["chemistry"].mean())
+stc10["Physics"]=stc10["Physics"].fillna(stc10["Physics"].mean())
+stc10["Maths"]=stc10["Maths"].round(2)
+stc10["chemistry"]=stc10["chemistry"].round(2)
+stc10["Physics"]=stc10["Physics"].round(2)
+#Mathematical calculations:
+stc10["Total"]=stc10["Maths"]+stc10["chemistry"]+stc10["Physics"]
+stc10["percentage"]=(stc10["Total"]/300)*100
+stc10["percentage"]=stc10["percentage"].round(2)
+#assigning grade:
+stc10["Grade"]=pd.cut(stc10["percentage"],bins=[30,40,50,60,70,80,100],labels=["Fail","D","C","B","A","A+"])
+print(stc10)
+
+# bar chart of students percentage
+stc10["percentage"].plot(kind="bar",color="")
+plt.title("Students Percentage")
+plt.xlabel("Students")
+plt.ylabel("Percentage")
+plt.show()
+
